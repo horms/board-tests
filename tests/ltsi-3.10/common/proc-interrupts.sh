@@ -23,7 +23,7 @@ PATTERN="$1"
 
 #echo "/proc/interrupts feature test for '$PATTERN'"
 
-if ! grep "$PATTERN" /proc/interrupts > /dev/null; then
+if ! grep "$PATTERN" /proc/interrupts; then
 	echo "error: not matched" >&2 
 	exit 1
 fi
