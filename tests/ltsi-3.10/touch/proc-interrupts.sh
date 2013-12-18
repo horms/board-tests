@@ -6,9 +6,9 @@ set -e
 echo "Touch /proc/interrupts presence test"
 
 IRQ=2010
-if $(dirname $0)/../common/proc-interrupts.sh \
-	"$IRQ:*"; then
-	echo "Test passed"
+DIV_NAME="st1232-ts"
+if $(dirname $0)/../common/proc-interrupts.sh "$DIV_NAME" | grep "$IRQ"; then
+        echo "Test passed"
 else
-	echo "Test has not passed"
+        echo "Test has not passed"
 fi

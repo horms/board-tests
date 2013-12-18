@@ -6,9 +6,9 @@ set -e
 echo "lcdc_fb.0 /proc/interrupts presence test"
 
 IRQ=209
-if $(dirname $0)/../common/proc-interrupts.sh \
-	"$IRQ:*"; then
-	echo "Test passed"
+DIV_NAME="sh_mobile_lcdc_fb.0"
+if $(dirname $0)/../common/proc-interrupts.sh "$DIV_NAME" | grep "$IRQ"; then
+        echo "Test passed"
 else
-	echo "Test has not passed"
+        echo "Test has not passed"
 fi

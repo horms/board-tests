@@ -6,9 +6,9 @@ set -e
 echo "mmcif /proc/interrupts presence test"
 
 IRQ=89
-if $(dirname $0)/../common/proc-interrupts.sh \
-	"$IRQ:*"; then
-	echo "Test passed"
+DIV_NAME="sh_mmc"
+if $(dirname $0)/../common/proc-interrupts.sh "$DIV_NAME" | grep "$IRQ"; then
+        echo "Test passed"
 else
-	echo "Test has not passed"
+        echo "Test has not passed"
 fi
