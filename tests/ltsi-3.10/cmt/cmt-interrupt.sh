@@ -6,20 +6,24 @@ set -e
 echo "CMT interrupt test"
 
 DEV_NAME="sh_cmt.10"
-FIELDS=7
 
 # CMT interrupt test
-$(dirname $0)/../common/interrupt-count.sh "$DEV_NAME" "$FIELDS" > bef
-read BEFORE < bef
-cat bef
+$(dirname $0)/../common/interrupt-count.sh "$DEV_NAME" > bef
 sleep 5
-$(dirname $0)/../common/interrupt-count.sh "$DEV_NAME" "$FIELDS" > aft
-read AFTER < aft
-cat aft
+$(dirname $0)/../common/interrupt-count.sh "$DEV_NAME" > aft
 
-# Shou result
-echo "$BEFORE"
-echo "$AFTER"
+# Filter interrupt number
+read BEFORE < bef
+BEFORE=${BEFORE%% [A-Z]*}
+BEFORE=${BEFORE#* }
+
+read AFTER < aft
+AFTER=${AFTER%% [A-Z]*}
+AFTER=${AFTER#* }
+
+# Show result
+echo "Before interrupt:$BEFORE"
+echo "After interrupt :$AFTER"
 
 if [ "$BEFORE" -ge "$AFTER" ]; then
 	echo "Interrupt cound is not increasing"
