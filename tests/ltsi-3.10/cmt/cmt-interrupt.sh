@@ -8,18 +8,9 @@ echo "CMT interrupt test"
 DEV_NAME="sh_cmt.10"
 
 # CMT interrupt test
-$(dirname $0)/../common/interrupt-count.sh "$DEV_NAME" > bef
+BEFORE=$($(dirname $0)/../common/interrupt-count.sh "$DEV_NAME")
 sleep 5
-$(dirname $0)/../common/interrupt-count.sh "$DEV_NAME" > aft
-
-# Filter interrupt number
-read BEFORE < bef
-BEFORE=${BEFORE%% [A-Z]*}
-BEFORE=${BEFORE#* }
-
-read AFTER < aft
-AFTER=${AFTER%% [A-Z]*}
-AFTER=${AFTER#* }
+AFTER=$($(dirname $0)/../common/interrupt-count.sh "$DEV_NAME")
 
 # Show result
 echo "Before interrupt:$BEFORE"

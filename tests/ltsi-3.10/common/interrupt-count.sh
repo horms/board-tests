@@ -11,4 +11,10 @@ fi
 
 IRQ=""
 
-$(dirname $0)/../common/proc-interrupts.sh "$1"
+$(dirname $0)/../common/proc-interrupts.sh "$1" > irq_temp
+
+# Filter interrupt number
+read IRQ < irq_temp
+IRQ=${IRQ%% [A-Za-z]*}
+IRQ=${IRQ#* }
+echo $IRQ
