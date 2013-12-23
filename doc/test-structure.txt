@@ -1,6 +1,6 @@
 
 Tests may be any executable format.
-The examples provides so far are (dash) shell scripts.
+The examples provides so far are (dash) shell or python scripts.
 
 There is one directory under tests per platform device to be tested
 
