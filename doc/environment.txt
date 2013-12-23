@@ -30,9 +30,9 @@ Root File System of Board
 4. Host executes tests by sshing to board
 
    e.g.
-   ssh root@armadillo800eva /root/tests/ltsi-3.10/sdhi.0/write-1k.sh
-   ssh root@armadillo800eva /root/tests/ltsi-3.10/sdhi.0/write-10M.sh
-   ssh root@armadillo800eva /root/tests/ltsi-3.10/sdhi.0/unbind-bind-write.sh
+   ssh root@armadillo800eva /root/tests/ltsi-3.10/board/sdhi.0/write-1k.sh
+   ssh root@armadillo800eva /root/tests/ltsi-3.10/board/sdhi.0/write-10M.sh
+   ssh root@armadillo800eva /root/tests/ltsi-3.10/board/sdhi.0/unbind-bind-write.sh
 
 5. Tests should exit with a value of 0 on success and any other value on error
 
