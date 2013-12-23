@@ -1,8 +1,8 @@
 #!/bin/sh
-# dmesg.sh
+# dmesg-quiet.sh
 #
-# Simple dmesg based feature test
-# 
+# Simple dmesg based feature test (quiet variant)
+#
 # Copyright (C) 2013 Horms Soltutions Ltd.
 #
 # Contact: Simon Horman <horms@verge.net.au>
@@ -14,11 +14,16 @@
 set -e
 #set -x
 
-$(dirname $0)/dmesg-quiet.sh "$@"
-STATUS="$?"
-
-if [ "$STATUS" -eq "0" ]; then
-	echo "Test passed"
+if [ $# -ne 1 ]; then
+	echo "usage: $(basename $0) PATTERN" >& 2
+	exit 1
 fi
 
-exit "$STATUS"
+PATTERN="$1"
+
+#echo "dmesg feature test for '$PATTERN'"
+
+if ! dmesg | grep "$PATTERN" > /dev/null; then
+	echo "error: not matched" >&2
+	exit 1
+fi
