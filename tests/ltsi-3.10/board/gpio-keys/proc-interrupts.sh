@@ -21,3 +21,7 @@ for SW in SW5 SW6 SW3 SW4; do
 done
 
 echo "Passed:$OK Failed:$NG"
+
+if [ "$NG" -ne 0 ]; then
+	exit 1
+fi
