@@ -1,0 +1,49 @@
+Environment
+-----------
+
+Target environment for running tests
+
+Two machines
+1. Controller
+   - Machine running Linux which controls the test
+   - Has ssh access to board
+2. Board
+   - board to be tested
+   - Provides ssh access to board
+
+Root File System of Board
+- I use NFS root
+- On some boards it is possible to use local flash
+- For tests with minimal dependencies it may be possible to use an initrd
+
+
+1. Ensure that python 2.7 is installed on the controller
+
+2. Ensure that sshd is running on board
+
+   - Ideally this should happen automatically on boot
+
+3. Manually install test on board
+   - Contents of tests/ltsi-3.10/board/
+
+4. Ensure any hardware required by board is in place
+   e.g. SD card inserted
+
+5a. Controller executes tests found in tests/ltsi-3.10/board/ remotely
+    by sshing to board
+
+     e.g.
+     ssh root@armadillo800eva /root/tests/ltsi-3.10/board/sdhi.0/write-1k.sh
+     ssh root@armadillo800eva /root/tests/ltsi-3.10/board/sdhi.0/write-10M.sh
+
+5b. Controller executs tets found in tests/ltsi-3.10/controller/ locally
+
+    e.g.
+    ./tests/ltsi-3.10/controller/scifab/tty-ping.py \
+	/dev/ttyFTDI-0 armadillo root /dev/ttySC1
+
+6. Tests should exit with a value of 0 on success and any other value on error
+
+   Tests may output informational messages to stdout or stderror
+
+   Tests should output errors to stderror
