@@ -47,6 +47,7 @@ echo "Test that block device and sysfs directory no longer exist"
 for i in $CHECK_PATH; do
 	if [ -e "$i" ]; then
 		echo Failed to unbind \'$DEVICE_NAME\': \'$i\' still exists >&2
+
 		exit 1
 	fi
 done
@@ -64,7 +65,7 @@ for i in $(seq 1 32); do
 		fi
 	done
 	if [ "$OK" = "false" ]; then
-		sleep 0.1
+		sleep 1
 	else 
 		break
 	fi

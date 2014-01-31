@@ -23,5 +23,6 @@ fi
 $(dirname $0)/../common/unbind-bind.sh "$@"
 
 echo "Perform write test"
+
 exec $(dirname $0)/../common/write-dd.sh "$3" 1M 10
 

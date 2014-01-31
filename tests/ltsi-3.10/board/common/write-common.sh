@@ -50,11 +50,10 @@ IN=$(mktemp -p $SRC_DEV/)
 OUT=$(mktemp -p $DST_DEV/)
 
 echo "Write random data to test file"
-dd if=/dev/urandom of="$IN" bs="$BLOCK_SIZE" count="$BLOCK_COUNT"
+dd if=/dev/urandom of="$IN" bs="$BLOCK_SIZE" count="$BLOCK_COUNT" > /dev/null 2>&1
 
 echo "Write test data to device"
-dd if="$IN" of="$OUT" bs="$BLOCK_SIZE" count="$BLOCK_COUNT"
-
+dd if="$IN" of="$OUT" bs="$BLOCK_SIZE" count="$BLOCK_COUNT" > /dev/null 2>&1
 
 IN_SUM=$(sha256sum "$IN" | cut -f 1 -d ' ')
 OUT_SUM=$(sha256sum "$OUT" | cut -f 1 -d ' ')

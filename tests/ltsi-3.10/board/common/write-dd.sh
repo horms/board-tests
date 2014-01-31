@@ -16,8 +16,10 @@ set -e
 
 if [ $# -ne 3 ]; then
 	echo "usage: $(basename $0) PATH BLOCK_SIZE BLOCK_COUNT" >& 2
+	sleep 0.5
 	exit 1
 fi
+
 
 DEV="$1"
 BLOCK_SIZE="$2"
