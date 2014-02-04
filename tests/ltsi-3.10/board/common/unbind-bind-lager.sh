@@ -20,7 +20,7 @@ if [ $# -lt 2 ]; then
 fi
 
 DRIVER="$1"; shift
-DEVICE_NAME="$1"; shift
+DEVICE_NAME="$1.1"; shift
 
 SYSFS_BASE_DIR="/sys/bus/platform/drivers/$DRIVER"
 SYSFS_DEV_DIR="$SYSFS_BASE_DIR/$DEVICE_NAME"
