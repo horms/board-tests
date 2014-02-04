@@ -1,5 +1,5 @@
 #!/bin/sh
-# unbind-bind-write.sh
+# unbind-bind-write-lager.sh
 #
 # Simple test of unbinding and re-binding a device followed
 # by writing to an associated block device
@@ -20,9 +20,9 @@ if [ $# -ne 3 ]; then
 	exit 1
 fi
 
-$(dirname $0)/../common/unbind-bind.sh "$@"
+$(dirname $0)/../common/unbind-bind-lager.sh "$@"
 
 echo "Perform write test"
 
-exec $(dirname $0)/../common/write-dd.sh "$3-part3" 1M 10
+exec $(dirname $0)/../common/write-dd.sh "$3-part1" 1M 10
 

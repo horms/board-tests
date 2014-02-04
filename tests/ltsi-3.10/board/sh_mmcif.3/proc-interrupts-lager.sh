@@ -3,10 +3,10 @@
 set -e
 #set -x
 
-echo "sdhi.0 /proc/interrupts presence test"
+echo "mmcif /proc/interrupts presence test"
 
-IRQ=150
-DIV_NAME="sh_mobile_sdhi.0"
+IRQ=202
+DIV_NAME="sh_mmcif"
 if $(dirname $0)/../common/proc-interrupts.sh "$DIV_NAME" | grep "$IRQ"; then
         echo "Test passed"
 else

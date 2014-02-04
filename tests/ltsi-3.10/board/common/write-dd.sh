@@ -26,7 +26,7 @@ BLOCK_SIZE="$2"
 BLOCK_COUNT="$3"
 
 echo "write test for $DEV (bs=$BLOCK_SIZE count=$BLOCK_COUNT)"
-
+sleep 1
 echo "Test that device exists"
 if [ ! -e "$DEV" ]; then
 	echo \'$DEV\': No such file or directory >&2

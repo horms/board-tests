@@ -8,10 +8,10 @@ echo "gpio-keys /proc/interrupts presence test"
 OK=0
 NG=0
 
-IRQ=2012
-for SW in SW5 SW6 SW3 SW4; do
+IRQ=416
+for SW2 in pin4 pin3 pin2 pin1; do
 	if $(dirname $0)/../common/proc-interrupts.sh \
-		"$IRQ: \+[0-9]\+ \+renesas_intc_irqpin.1 \+ \+$SW"; then
+		"$IRQ: \+[0-9]\+ \+gpio_rcar.1 \+ \+SW2-$PIN"; then
 		OK=$(($OK + 1))
 	else
 		NG=$(($NG + 1))
