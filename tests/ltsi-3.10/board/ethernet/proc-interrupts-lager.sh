@@ -3,9 +3,9 @@
 set -e
 #set -x
 
-echo "Ethernet /proc/interrupts presence test"
+echo "ethernet /proc/interrupts presence test"
 
-IRQ=142
+IRQ=194
 INTERFACE="eth"
 # Confirm eth interface:
 echo "Confirm $INTERFACE interface on board:"

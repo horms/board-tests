@@ -3,9 +3,7 @@
 set -e
 #set -x
 
-echo "Ethernet /proc/interrupts presence test"
-
-IRQ=142
+echo "ethernet dmesg feature test"
 INTERFACE="eth"
 # Confirm eth interface:
 echo "Confirm $INTERFACE interface on board:"
@@ -23,8 +21,4 @@ if [ $id -eq 20 ]; then
         exit 1
 fi
 
-if $(dirname $0)/../common/proc-interrupts.sh "$IF" | grep "$IRQ"; then
-	echo "Test passed"
-else
-	echo "Test has not passed"
-fi
+exec $(dirname $0)/../common/dmesg.sh "net $IF: attached phy 1 to driver Generic PHY"
