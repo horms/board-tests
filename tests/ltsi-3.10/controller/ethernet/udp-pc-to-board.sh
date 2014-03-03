@@ -13,19 +13,17 @@ fi
 
 BOARD_HOSTNAME="armadillo800"
 BOARD_USERNAME="root"
-LOG_FILE="/tmp/log_file"
+LOG_FILE="/tmp/udp.txt"
 TYPES="UDP"
-DEVICE="BOARD"
-OK=0
-NG=0
+TARGET="BOARD"
 HOSTPC_IP="$1"
 BOARD_IP="$2"
 BW="M"
 
 # UDP Check: on board
 echo "UDP Check: From HOSTPC to BOARD:"
-$(dirname $0)/../common/udp-ctp-check.py $BOARD_HOSTNAME $BOARD_USERNAME \
-	$LOG_FILE $TYPES $DEVICE
+$(dirname $0)/../common/udp_check.py $BOARD_HOSTNAME $BOARD_USERNAME \
+	$LOG_FILE $TARGET
 
 # transfer data from HOSTPC to BOARD:
 
