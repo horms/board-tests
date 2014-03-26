@@ -40,24 +40,35 @@ do
 	fi
 
 	PARAMETER="`cat $LOG_FILE | grep "(0%)"`"
+
 	# Looking for info of Speed
-	for info in $PARAMETER
-	do
-        	NUM=$(($NUM + 1))
-        	if [ $NUM -eq 7 ]; then
-                	SPEED=$info
-        	elif [ $NUM -eq 8 ]; then
-                	UNIT="$info"
-        	fi
-	done
+        COUNT1=0
+        COUNT2=0
+        for unit in $PARAMETER
+        do
+                COUNT1=$(($COUNT1 + 1))
+                if [ "$unit" = "Mbits/sec" ];then
+                        UNIT=$unit
+                        COUNT1=$((COUNT1 - 1))
+                        for speed in $PARAMETER
+                        do
+                                COUNT2=$(($COUNT2 + 1))
+                                if [ $COUNT1 -eq $COUNT2 ]; then
+                                        SPEED=$speed
+                                fi
+                        done
+                fi
+        done
 	echo "Speed: $SPEED $UNIT"
 	GOOD="`expr $number / 2`"
 	INT1=${SPEED/.*}
 	INT2=${GOOD/.*}
-	if [ $INT1 -ge $INT2 ];then
+	if [ $INT1 -eq 0 ];then
+		echo "TEST $BANDWITCH SPEED: FAILED"
+	elif [ $INT1 -ge $INT2 ];then
 		echo "TEST $BANDWITCH SPEED: PASSED"
 	else
-		echo "TEST $BANDWITCH SPEED: FAILED"
+		echo "TEST $BANDWITCH SPEED: NOT GOOD"
 	fi
 
         if [ -f $LOG_FILE1 ]; then
@@ -67,6 +78,6 @@ do
                 rm -rf $LOG_FILE
         fi
 
-sleep 1
+sleep 2
 done
 

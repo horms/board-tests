@@ -15,25 +15,38 @@ host_board=$2
 data_size=$3
 
 # Make partition of storage on the Board
-ssh $host_user@$host_board /bin/mount -t tmpfs -o size=450M tmpfs /tmp
-ssh $host_user@$host_board /bin/dd if=/dev/zero of=/home/tmp.img bs=1M count=400 > /dev/null 2>&1
-ssh $host_user@$host_board /bin/cp /home/tmp.img /tmp/tmp.img 
-ssh $host_user@$host_board /sbin/mkfs.ext3 -F -L storage /tmp/tmp.img > /dev/null 2>&1
+
+if ! ssh $host_user@$host_board /bin/mount -t tmpfs -o size=400M tmpfs /tmp; then
+	echo "Could not mount a ram tmpfs"
+	exit 1
+fi
+
+if ! ssh $host_user@$host_board /bin/dd if=/dev/zero of=/tmp/tmp.img bs=1M count=380 \
+	 > /dev/null 2>&1; then
+	echo "Could not make a tmp.img file"
+	exit 1
+fi
+
+if ! ssh $host_user@$host_board /sbin/mkfs.ext3 -F -L "storage" /tmp/tmp.img > \
+	/dev/null 2>&1; then
+	echo "Could not create a partition"
+	exit 1
+fi
 
 # Load the usb storage module
 if ssh $host_user@$host_board /sbin/modprobe g_mass_storage file=/tmp/tmp.img > /dev/null; then
-	echo "Board: Loading is OK"
+	echo "Board: Loading passed"
 else
-	echo "Board: Loading is error"
+	echo "Board: Loading failed"
 	exit 1
 fi
 
 # Confirm storage have was mountted on the host PC
 sleep 2
 if find /media -name storage | grep "storage" > /dev/null; then
-	echo "Host PC: storage mount is OK"
+	echo "Host PC: The storage has mounted on pc "
 else
-	echo "Host PC: storage mount is error"
+	echo "Host PC: The storage hasn't mounted on pc"
 	exit 1
 fi
 
@@ -52,9 +65,18 @@ rm -rf $dst_dir/*
 umount /media/storage
 
 # Unload storage module on the Board
-if ssh $host_user@$host_board /sbin/rmmod g_mass_storage.ko > /dev/null; then
-        echo "Board: Unloading is OK"
+if ssh $host_user@$host_board /sbin/rmmod g_mass_storage > /dev/null; then
+        echo "Board: Unloading passed"
 else
-        echo "Board: Unloading is error"
+        echo "Board: Unloading failed"
         exit 1
 fi
+sleep 1
+# Umount the tmpfs storage
+if ssh $host_user@$host_board /bin/umount /tmp > /dev/null; then
+        echo "Board: Umount tmpfs: passed"
+else
+        echo "Board: Umount tmpfs: failed"
+        exit 1
+fi
+

@@ -51,7 +51,7 @@ do
 	# Write a file data:
 		echo "Writing to storage..."
 		if ! $(dirname $0)/../common/read_write_data.py $SOURCE $DESTINATION \
-		$SIZE $LOG_FILE; then
+$SIZE $LOG_FILE; then
 			echo "Write failed"
 		fi
         elif [ $perform -eq 2 ]; then
@@ -61,7 +61,7 @@ do
 		SOURCE="$DESTINATION/$data"
 		DESTINATION="/tmp"
                 if ! $(dirname $0)/../common/read_write_data.py $SOURCE $DESTINATION \
-                $SIZE $LOG_FILE; then
+$SIZE $LOG_FILE; then
                         echo "Read failed"
                 fi
 	fi
