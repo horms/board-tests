@@ -5,7 +5,11 @@ set -e
 #set -x
 
 echo "`date`   SDHI driver autotest start"
-echo "Exemple ./scrip.sh 100"
+if [ $# -ne 1 ]; then
+	echo "usage: $(basename $0) DATA_SIZE" >& 2
+	echo "For example:./$(basename $0) 100"
+	exit 1
+fi
 
 mkdir -p /mnt/sd1
 mkdir -p /tmp/temp
