@@ -20,12 +20,32 @@ if [ $# -ne 1 ]; then
 fi
 
 PATTERN="$1"
+ERROR="error"
+ERROR1="Error"
+FILE1="/tmp/interrupts"
 
 #echo "/proc/interrupts feature test for '$PATTERN'"
-
-if ! grep "$PATTERN" /proc/interrupts; then
-	echo "error: not matched" >&2 
+if cat /proc/interrupts | grep "$PATTERN" > $FILE1; then
+#begin if
+	if cat $FILE1 | grep $ERROR > /dev/null; then
+		echo "driver error" >&2
+		rm -r $FILE1
+		exit 1
+	elif cat $FILE1 | grep $ERROR1 > /dev/null; then
+		echo "driver error" >&2
+		rm -r $FILE1
+		exit 1
+	else
+		cat $FILE1
+	fi
+#end if
+else
+	echo "error: not matched" >&2
+	rm -r $FILE1
 	exit 1
 fi
 
-#echo "Test passed"
+if ! rm -r $FILE1; then
+        echo "Could not remove $FILE1"
+        exit 1
+fi
