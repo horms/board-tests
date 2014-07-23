@@ -7,7 +7,7 @@ set -e
 SD1="mmc1"
 CARD="mmcblk"
 FILE_LOG="/tmp/sdhi.txt"
-LOG_INSERT_SD1="$SD1: new high speed SDHC card"
+LOG_INSERT_SD1="$SD1: new"
 LOG_REMOVED_SD1="$SD1: card"
 
 #Confirm sd1 card:
