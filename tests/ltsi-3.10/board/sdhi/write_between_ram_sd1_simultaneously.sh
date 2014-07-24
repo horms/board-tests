@@ -66,7 +66,16 @@ else
 	exit 1
 fi
 
-sleep 1
+# To ensure that the writing data has been finished.
+if ! $(dirname $0)/../common/umount-device.sh $SD1 > /dev/null; then
+	echo "Could not umount the SD1 card"
+	exit 1
+fi
+# Re-mount
+if ! $(dirname $0)/../common/mount-device.sh $SD1 > /dev/null; then
+	echo "Could not re-mount the SD1 card"
+	exit 1
+fi
 
 echo "Confirm the copied data"
 
@@ -81,7 +90,24 @@ else
 fi
 
 # Clean before finish work
-umount $SD1/
-rm -r /mnt/*
-umount $RAM/
-rm -r /tmp/*
+if rm -r $SD1/*; then
+	if ! $(dirname $0)/../common/umount-device.sh $SD1 > /dev/null; then
+		echo "Could not umount the SD1 card"
+		exit 1
+	fi
+	rm -r $SD1/
+else
+	echo "Could not remove data out of SD1"
+	exit 1
+fi
+
+if rm -r $RAM/*; then
+	if ! $(dirname $0)/../common/umount-device.sh $RAM > /dev/null; then
+		echo "Could not umount the RAM"
+		exit 1
+	fi
+	rm -r $RAM/
+else
+	echo "Could not remove data out of RAM"
+	exit 1
+fi

@@ -47,9 +47,7 @@ if ! $(dirname $0)/../common/read_write_data.py $SOURCE $RAM $SIZE $LOG_FILE; th
 	echo "Prepare the data failed"
 	exit 1
 fi
-
-sync; echo 3 > /proc/sys/vm/drop_caches
-
+sync;
 if [ -f $LOG_FILE ]; then
 	rm -r $LOG_FILE
 fi
@@ -63,9 +61,29 @@ else
 	echo "Write the data to SD0 and SD1 has failed"
 	exit 1
 fi
+# To ensure that the writing data has been finished.
+if ! $(dirname $0)/../common/umount-device.sh $SD0 > /dev/null; then
+	echo "Could not umount the SD0 card"
+	exit 1
+fi
+
+if ! $(dirname $0)/../common/umount-device.sh $SD1 > /dev/null; then
+	echo "Could not umount the SD1 card"
+	exit 1
+fi
+
+# Re-mount
+if ! $(dirname $0)/../common/mount-device.sh $SD0 > /dev/null; then
+	echo "Could not re-mount the SD0 card"
+	exit 1
+fi
+
+if ! $(dirname $0)/../common/mount-device.sh $SD1 > /dev/null; then
+	echo "Could not re-mount the SD1 card"
+	exit 1
+fi
 
 echo "Confirm the copied data "
-
 if cmp $SD0$FILE_NAME $SD1$FILE_NAME; then
 	echo "TEST PASSED"
 else
@@ -73,8 +91,35 @@ else
 fi
 
 # Clean before finish work
-umount $SD0/
-umount $SD1/
-rm -r /mnt/*
-umount $RAM/
-rm -r /tmp/*
+if rm -r $SD0/*; then
+	if ! $(dirname $0)/../common/umount-device.sh $SD0 > /dev/null; then
+		echo "Could not umount the SD0 card"
+		exit 1
+	fi
+	rm -r $SD0/
+else
+	echo "Could not remove data out of SD0"
+	exit 1
+fi
+
+if rm -r $SD1/*; then
+	if ! $(dirname $0)/../common/umount-device.sh $SD1 > /dev/null; then
+		echo "Could not umount the SD1 card"
+		exit 1
+	fi
+	rm -r $SD1/
+else
+	echo "Could not remove data out of SD1"
+	exit 1
+fi
+
+if rm -r $RAM/*; then
+	if ! $(dirname $0)/../common/umount-device.sh $RAM > /dev/null; then
+		echo "Could not umount the RAM"
+		exit 1
+	fi
+	rm -r $RAM/
+else
+	echo "Could not remove data out of RAM"
+	exit 1
+fi
