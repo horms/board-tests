@@ -17,7 +17,7 @@ SIZE="$1"
 SOURCE="/dev/urandom"
 DESTINATION="/media/storage"
 
-if [ ${SIZE/.*} -le 399 ]; then
+if [ $(printf "%.0f" $SIZE) -le 399 ]; then
 	echo "Please enter a data size 400 Mb or more"
 	echo "For example:$(basename $0) 500"
 	exit 1
