@@ -61,8 +61,8 @@ do
 	done
 	echo "Speed: $SPEED $UNIT"
 	GOOD="`expr $number / 2`"
-	INT1=${SPEED/.*}
-	INT2=${GOOD/.*}
+	INT1=$( printf "%.0f" $SPEED )
+	INT2=$( printf "%.0f" $GOOD )
 	if [ $INT1 -eq 0 ];then
 		echo "TEST $BANDWITCH SPEED: FAILED"
 	elif [ $INT1 -ge $INT2 ];then

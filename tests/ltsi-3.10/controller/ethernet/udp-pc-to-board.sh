@@ -31,12 +31,14 @@ for number in 10 20 30 40 50 60 70 80 90 100
 do
 	NUM=0
 	BANDWITCH=$number$BW
+	echo "Test Bandwitch: $BANDWITCH"
 	if ! iperf -c $BOARD_IP -u -b $BANDWITCH > $LOG_FILE; then
         	echo "Could not transfer data"
 	elif cat $LOG_FILE | grep "(0%)" > /dev/null; then
 		echo "$TYPES: Transfer data: Passed"
 	else
 		echo "$TYPES: Transfer data: Failed"
+		continue
 	fi
 
 	PARAMETER="`cat $LOG_FILE | grep "(0%)"`"
@@ -61,8 +63,8 @@ do
         done
 	echo "Speed: $SPEED $UNIT"
 	GOOD="`expr $number / 2`"
-	INT1=${SPEED/.*}
-	INT2=${GOOD/.*}
+	INT1=$( printf "%.0f" $SPEED )
+	INT2=$( printf "%.0f" $GOOD )
 	if [ $INT1 -eq 0 ];then
 		echo "TEST $BANDWITCH SPEED: FAILED"
 	elif [ $INT1 -ge $INT2 ];then
